@@ -131,6 +131,7 @@ python3 -m tests.ejecutar     # sin instalar nada (18 pruebas)
 - Versión actual: ver `VERSION` (2.0.0); cambios en `CHANGELOG.md`.
 - Licencia: MIT (`LICENSE`).
 - Prueba de usabilidad: `docs/prueba_usabilidad_SUS.xlsx` (cuestionario SUS de 10 ítems y tareas; calcula el puntaje solo).
+- Resultados de la prueba con 5 usuarios: `docs/prueba_usabilidad_SUS_resultados.xlsx` (SUS promedio 70,5; 33 de 35 tareas completadas).
 
 ## Fichas oficiales y Matriz RAS
 
