@@ -210,6 +210,16 @@ def demanda(f1, viviendas, pob, esq, p, m, f3=None):
     m.add(B, "Agua para subsistencia total (QE)", round(qe_total), "L/día", "QE por vivienda × viviendas futuras")
 
     perd = p["perdidas"] / 100
+    # Res. 0330/2017 Art. 47, parágrafo 2: k1 y k2 se calculan con registros de macromedición; sin ellos se justifican,
+    # y no pueden superar 1,3 y 1,6 (Pf ≤ 12.500 hab) ni 1,2 y 1,5 (Pf > 12.500 hab).
+    max_k1, max_k2 = (1.3, 1.6) if pob["pf"] <= 12500 else (1.2, 1.5)
+    for k, tope in (("k1", max_k1), ("k2", max_k2)):
+        if p[k] > tope:
+            if p.get("_origen_" + k) or k in p.get("_usuario", {}):
+                m.alerta(f"{k} = {p[k]:g} supera el máximo de {tope:g} del Art. 47 de la Res. 0330/2017 para una población futura de {pob['pf']:.0f} hab.")
+            else:
+                p[k] = tope
+                p["_origen_" + k] = f"Máximo del Art. 47 de la Res. 0330/2017 para Pf > 12.500 hab"
     q_dom = d * pob["pf"]
     qmd = (q_dom + qe_total) / (1 - perd) / 86400
     if p.get("picos_en_subsistencia") or p.get("version_reglas") == "v1":

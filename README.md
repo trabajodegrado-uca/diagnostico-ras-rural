@@ -123,7 +123,7 @@ escritos en la Ficha 3.
 
 ```bash
 python3 -m pytest -q          # si tiene pytest instalado
-python3 -m tests.ejecutar     # sin instalar nada (17 pruebas)
+python3 -m tests.ejecutar     # sin instalar nada (18 pruebas)
 ```
 
 ## Versión, licencia y usabilidad

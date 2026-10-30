@@ -10,7 +10,8 @@
 - Empate técnico cuando la diferencia es ≤ 0,20 puntos o la estabilidad Monte Carlo de la primera alternativa es < 80 %.
 - Tamaño de muestra de Cochran (95 %, e = 10 %) en lugar del umbral del 30 %.
 - Verificación (fórmulas) separada de validación (decisiones); caso de control C6 no usado para ajustar.
-- Pruebas unitarias en `tests/` (17).
+- Topes de k1 y k2 del Art. 47 de la Res. 0330/2017 (1,3 y 1,6 hasta 12.500 hab; 1,2 y 1,5 por encima), con alerta si un valor adoptado los supera.
+- Pruebas unitarias en `tests/` (18).
 - Contraste con las fichas oficiales del Ministerio: 19 variables nuevas (municipio PDET, territorio étnico, etnia, distancia mínima entre viviendas, actividad del suelo, vía de acceso, inspección sanitaria, IRCA, recuperación de costos, disposición final de residuos y la sección «Entorno de la fuente»). Escenarios de amenaza completos.
 - Hoja «Fuentes» de la Matriz RAS oficial programada como contraste (`core/matriz_ras.py`), con hoja propia en el Excel y fila en la ficha de proyecto.
 

@@ -32,9 +32,9 @@ PARAMETROS = {
     "perdidas": {"valor": 25, "unidad": "%", "tipo": "NORMA",
                  "ref": "Res. 0844/2018 Art. 32.2.a; Res. 330/2017 Art. 44 (máximo 25 %)"},
     "k1": {"valor": 1.3, "unidad": "-", "tipo": "NORMA",
-           "ref": "Res. 0330/2017 – coeficiente de consumo máximo diario (no modificado por la Res. 0799/2021); valor aplicado en los estudios C1 y C2"},
+           "ref": "Res. 0330/2017 Art. 47 – máximo para Pf ≤ 12.500 hab (1,2 si es mayor); debe calcularse con macromedición y, sin ella, justificarse. Se adopta el máximo por falta de registros en zona rural. No modificado por la Res. 0799/2021"},
     "k2": {"valor": 1.6, "unidad": "-", "tipo": "NORMA",
-           "ref": "Res. 0330/2017 – coeficiente de consumo máximo horario (no modificado por la Res. 0799/2021); valor aplicado en los estudios C1 y C2"},
+           "ref": "Res. 0330/2017 Art. 47 – máximo para Pf ≤ 12.500 hab (1,5 si es mayor); debe calcularse con macromedición y, sin ella, justificarse. Se adopta el máximo por falta de registros en zona rural. No modificado por la Res. 0799/2021"},
     "umbral_viviendas_acueducto": {"valor": 600, "unidad": "viviendas", "tipo": "NORMA",
                                    "ref": "Res. 0844/2018 Art. 25.b (núcleos de más de 600 viviendas → acueducto)"},
 

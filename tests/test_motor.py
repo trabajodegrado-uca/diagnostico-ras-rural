@@ -42,6 +42,13 @@ def test_caudales_caso_monquira():
     assert abs(d["QMH"] - 1.579) / 1.579 < 0.01
 
 
+def test_k1_k2_topes_del_articulo_47():
+    r = calcular(proyecto({"num_viviendas": 3000, "num_habitantes": 13000}), [], [])
+    assert (r["parametros"]["k1"], r["parametros"]["k2"]) == (1.2, 1.5)    # Pf > 12.500 hab
+    r = calcular(proyecto(f3={"k1_adoptado": 1.5}), [], [])
+    assert any("supera el máximo de 1.3" in a for a in r["alertas"])
+
+
 def test_picos_no_se_aplican_al_agua_de_subsistencia():
     viv = [{"tipo_predio": "Vivienda", "habitantes": 4, "bovinos": 10, "consumo_l_dia": 400}]
     r = calcular(proyecto(), [], viv)
