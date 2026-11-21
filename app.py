@@ -185,7 +185,7 @@ def pestaña_registros(tipo, tab, campo_codigo):
             st.success("Registro guardado.")
             mostrar_hallazgos(aviso, exito="")
         if registros:
-            st.dataframe(registros_a_tabla(tipo, registros), use_container_width=True, hide_index=True, height=230)
+            st.dataframe(registros_a_tabla(tipo, registros), width="stretch", hide_index=True, height=230)
         opciones = {0: "➕ Nuevo registro"} | {r["id"]: f"{r.get(campo_codigo) or 'Sin código'} (#{r['id']})" for r in registros}
         rid = st.selectbox("Registro a diligenciar / editar", list(opciones), format_func=opciones.get, key=f"sel_{tipo}")
         actual = next((r for r in registros if r["id"] == rid), {})
@@ -284,7 +284,7 @@ with tabs[4]:
         {"PREFACTIBLE": st.success, "PREFACTIBLE CON CONDICIONES": st.warning, "NO PREFACTIBLE": st.error,
          "INFORMACIÓN INSUFICIENTE": st.info}[pre["concepto"]](f"**{pre['concepto']}** · {pre['resumen']}")
         from core.exportar import tabla_prefactibilidad
-        st.dataframe(tabla_prefactibilidad(res).iloc[1:].astype(str), use_container_width=True, hide_index=True)
+        st.dataframe(tabla_prefactibilidad(res).iloc[1:].astype(str), width="stretch", hide_index=True)
 
         st.subheader("📄 Ficha de proyecto")
         for seccion, items in res["ficha"]:
@@ -294,7 +294,7 @@ with tabs[4]:
                         st.markdown(f"**{item}:** {valor}")
 
         st.subheader("💧 Oferta vs. demanda")
-        st.dataframe(tabla_fuentes(res), use_container_width=True, hide_index=True)
+        st.dataframe(tabla_fuentes(res), width="stretch", hide_index=True)
 
         st.subheader("⚖️ Matrices multicriterio")
         for titulo, clave, pz in (("Abastecimiento", "alternativas_agua", res["pesos"]),
@@ -304,7 +304,7 @@ with tabs[4]:
                 continue
             st.markdown(f"**{titulo}**")
             df = tabla_alternativas(res[clave], pz)
-            st.dataframe(df.drop(columns=["Justificación"]), use_container_width=True, hide_index=True)
+            st.dataframe(df.drop(columns=["Justificación"]), width="stretch", hide_index=True)
             graf = df[df["Puntaje total (1–5)"] != ""][["Alternativa", "Puntaje total (1–5)"]].set_index("Alternativa")
             if not graf.empty:
                 try:
@@ -324,21 +324,21 @@ with tabs[4]:
                               "Misma ganadora Monte Carlo (%)": round(e["monte_carlo_primera"], 1),
                               "Mismo ranking Monte Carlo (%)": round(e["monte_carlo_ranking"], 1)})
         if filas:
-            st.dataframe(pd.DataFrame(filas), use_container_width=True, hide_index=True)
+            st.dataframe(pd.DataFrame(filas), width="stretch", hide_index=True)
 
         if res.get("matriz_ras"):
             st.subheader("🏛️ Contraste con la Matriz RAS del Ministerio (fuentes)")
             st.caption("Matriz de ejemplo publicada por Minvivienda (hoja «Fuentes», 100 puntos). Los criterios sin dato se omiten "
                        "y el puntaje se reescala; llene la sección «Entorno de la fuente» de cada fuente para completarla.")
             from core.exportar import tabla_matriz_ras
-            st.dataframe(tabla_matriz_ras(res).astype(str), use_container_width=True, hide_index=True)
+            st.dataframe(tabla_matriz_ras(res).astype(str), width="stretch", hide_index=True)
             c = res.get("contraste_matriz_ras") or {}
             if c:
                 from core.motor import _texto_ras
                 (st.success if c["compatible"] else st.warning)(_texto_ras(c))
 
         with st.expander("🧮 Memoria de cálculo completa"):
-            st.dataframe(pd.DataFrame(res["memoria"]).astype(str), use_container_width=True, hide_index=True)
+            st.dataframe(pd.DataFrame(res["memoria"]).astype(str), width="stretch", hide_index=True)
 
 
 # ---------------------------------------------------------------------------
@@ -353,7 +353,7 @@ with tabs[5]:
 
     st.subheader("Indicadores de la captura")
     st.dataframe(pd.DataFrame(indicadores(proyecto, fuentes, viviendas), columns=["Indicador", "Valor", "Unidad"]).astype(str),
-                 use_container_width=True, hide_index=True)
+                 width="stretch", hide_index=True)
 
     with st.expander("✅ Validación de la herramienta con casos publicados"):
         st.caption("Se cargan los datos de trabajos de grado y estudios publicados, se corren en el motor y se comparan "
@@ -369,12 +369,12 @@ with tabs[5]:
                        f"de {rs['Decisiones comparables (versión final)']} comparables", delta_color="off")
         cols[2].metric("Reglas DNP que coinciden", f"{rs['Reglas DNP que coinciden']} de {rs['Reglas DNP verificadas']}")
         st.markdown("**Verificación de fórmulas** (las filas marcadas «No» son datos de entrada o valores fijados por construcción)")
-        st.dataframe(val["calculos"], use_container_width=True, hide_index=True)
+        st.dataframe(val["calculos"], width="stretch", hide_index=True)
         st.markdown("**Validación de decisiones: versión 1 frente a versión final** (C6 es el caso de control, no usado para ajustar)")
-        st.dataframe(val["comparacion_versiones"], use_container_width=True, hide_index=True)
+        st.dataframe(val["comparacion_versiones"], width="stretch", hide_index=True)
         if len(val["analisis"]):
             st.markdown("**Análisis de sensibilidad del suelo en C4** (no se cuenta como acierto)")
-            st.dataframe(val["analisis"], use_container_width=True, hide_index=True)
+            st.dataframe(val["analisis"], width="stretch", hide_index=True)
         st.download_button("Descargar validación (.xlsx)", exportar_excel_validacion(val), file_name="validacion_herramienta.xlsx")
 
     st.subheader("Exportar")
@@ -382,6 +382,6 @@ with tabs[5]:
     c1, c2 = st.columns(2)
     res_exp = calcular(proyecto, fuentes, viviendas, dict(st.session_state.get("ajustes", {})))
     c1.download_button("📊 Diagnóstico y cálculos en Excel", exportar_excel(proyecto, fuentes, viviendas, res_exp),
-                       file_name=f"diagnostico_{nombre_archivo}.xlsx", type="primary", use_container_width=True)
+                       file_name=f"diagnostico_{nombre_archivo}.xlsx", type="primary", width="stretch")
     c2.download_button("🧮 Datos y resultados (JSON)", exportar_json(proyecto, fuentes, viviendas, res_exp),
-                       file_name=f"diagnostico_{nombre_archivo}.json", use_container_width=True)
+                       file_name=f"diagnostico_{nombre_archivo}.json", width="stretch")

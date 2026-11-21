@@ -94,7 +94,9 @@ def concepto(proyecto, fuentes, viviendas, res):
         aptas = [f for f in ffs if f["_indice"] is not None and f["_indice"] >= 1 and f["Continuidad"] != "Estacional (se seca)"]
         suma = sum(f["_indice"] or 0 for f in ffs if f["Continuidad"] != "Estacional (se seca)")
         lluvia = res.get("lluvia") or {}
-        if aptas:
+        if not ffs:
+            estado, ev = NO_CUMPLE, "No hay fuentes superficiales o subterráneas registradas con caudal"
+        elif aptas:
             estado = CUMPLE
             ev = "Fuentes con índice oferta/demanda ≥ 1: " + ", ".join(f"{f['Fuente']} ({f['_indice']:.2f})" for f in aptas)
         elif suma >= 1 or (lluvia.get("cobertura") or 0) >= 0.9:

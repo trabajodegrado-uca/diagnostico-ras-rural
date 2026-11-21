@@ -125,7 +125,7 @@ def tabla_fuentes(res):
 def tabla_alternativas(alts, pesos):
     filas = []
     for a in alts:
-        fila = {"Posición": a.posicion or "No viable", "Alternativa": a.nombre}
+        fila = {"Posición": str(a.posicion) if a.posicion else "No viable", "Alternativa": a.nombre}
         for crit, w in pesos.items():
             fila[f"{crit} ({w * 100:.0f} %)"] = a.puntajes.get(crit) if a.viable else ""
         fila["Puntaje total (1–5)"] = a.total if a.viable else ""

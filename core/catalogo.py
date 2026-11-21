@@ -87,7 +87,7 @@ def auditar_variable(form, c):
     if c["tipo"] == "multiple":
         prueba("C", ["Opción inexistente"], True)
     prueba("V", _valido(c), False)
-    return "".join(sorted(set(pruebas), key="OTREC V".index)), ("Superada" if not fallas else "Falla: " + "".join(fallas))
+    return "".join(sorted(set(pruebas), key="OTREC V".index)), ("Superada" if not fallas else "Falla: " + "".join(fallas)), len(pruebas)
 
 
 def _rango(c):
@@ -112,13 +112,13 @@ def catalogo():
                 u = usos(c["id"], codigo)
                 if form in ("ficha1", "ficha3") and c.get("req") and "Concepto de prefactibilidad" not in u:
                     u.append("Concepto de prefactibilidad (completitud)")
-                pr, res = auditar_variable(form, c)
+                pr, res, n_pr = auditar_variable(form, c)
                 filas.append({
                     "Formulario": f["titulo"], "N.º": n, "Sección": re.sub(r"^[A-Z0-9]{1,2}\. ", "", s["seccion"]),
                     "Identificador": c["id"], "Pregunta": c["label"], "Tipo de dato": c["tipo"], "Clase": CLASE[c["tipo"]],
                     "Unidad, rango u opciones": _rango(c), "Obligatoria": "Sí" if c.get("req") else "No",
                     "Base normativa": c.get("ref", ""), "Uso en la herramienta": "; ".join(u) if u else "Registro y reporte",
-                    "Pruebas": pr, "Resultado": res,
+                    "Pruebas": pr, "N.º de pruebas": n_pr, "Resultado": res,
                 })
     return pd.DataFrame(filas)
 
